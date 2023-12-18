@@ -22,9 +22,71 @@ private:
     int szerokosc_planszy;
     int zasieg;
 public:
-    logika(int ZadanyZasieg = 1):zasieg(ZadanyZasieg)
+    logika(int zadany_zasieg = 1, int zadana_wysokosc = 1, int zadana_szerokosc = 1):zasieg(zadany_zasieg)
     {}
-    komorka** Zasady(komorka **komorki){
+    komorka** Zasady(komorka **komorki_stare){
+        bool stan_komorki;
+         komorka **komorki;
+        komorki = new komorka*[wysokosc_planszy];
+        for(int i = 0; i < wysokosc_planszy; i++){
+            komorki[i] = new komorka[szerokosc_planszy];
+        }
+        int zywi_somsiedzi;
+        bool szerokosc_min, wysokosc_min, szerokosc_max, wysokosc_max;
+
+        for(int i = 0; i < wysokosc_planszy; i++){
+            zywi_somsiedzi = 0;
+            for(int j = 0; i< szerokosc_planszy; i++){
+                stan_komorki = komorki_stare[i][j].GetStatusKomorki();
+                if(i > 0){
+                    if(komorki_stare[i-1][j].GetStatusKomorki())
+                        zywi_somsiedzi++;
+                }
+                if(j > 0){
+                    if(komorki_stare[i][j-1].GetStatusKomorki())
+                        zywi_somsiedzi++;
+                }
+                if(i < wysokosc_planszy){
+                    if(komorki_stare[i+1][j].GetStatusKomorki())
+                        zywi_somsiedzi++;
+                }
+                if(j < szerokosc_planszy){
+                    if(komorki_stare[i][j+1].GetStatusKomorki())
+                        zywi_somsiedzi++;
+                }
+
+
+                if(i > 0 && j > 0){
+                    if(komorki_stare[i-1][j-1].GetStatusKomorki())
+                        zywi_somsiedzi++;
+                }
+                if(j > 0 && j < szerokosc_planszy){
+                    if(komorki_stare[i-1][j+1].GetStatusKomorki())
+                        zywi_somsiedzi++;
+                }
+                if(j < szerokosc_planszy && i < wysokosc_planszy){
+                    if(komorki_stare[i+1][j+1].GetStatusKomorki())
+                        zywi_somsiedzi++;
+                }
+                if(i < wysokosc_planszy && j > 0){
+                    if(komorki_stare[i+1][j-1].GetStatusKomorki())
+                        zywi_somsiedzi++;
+                }
+
+                if(zywi_somsiedzi == 3){
+                    komorki[i][j].SetStatusKomorki(true);
+                }else if(stan_komorki && zywi_somsiedzi == 2){
+                    komorki[i][j].SetStatusKomorki(true);
+                }else{
+                    komorki[i][j].SetStatusKomorki(false);
+                }
+            }
+        }
+        for(int i = 0; i < wysokosc_planszy; i++){
+           delete [] komorki_stare[i];
+        }
+        delete [] komorki_stare;
+
         return komorki;
     }
 
@@ -38,13 +100,18 @@ private:
     int generacja;
     logika *logika_planszy;
 public:
-    plansza(int ZadanaWysokosc, int ZadanaSzerokosc, int zasieg = 1):generacja(0){
-        if(zasieg > 0){
-            logika_planszy = new logika(zasieg);
+    plansza(int zadana_wysokosc, int zadana_szerokosc, int zasieg = 1):generacja(0){
+        if(zadana_wysokosc <= 0 || zadana_szerokosc <= 0){
+            zadana_szerokosc = 8;
+            zadana_wysokosc = 8;
         }
-        komorki = new komorka*[ZadanaWysokosc];
-        for(int i = 0; i < ZadanaWysokosc;i++){
-            komorki[i] = new komorka[ZadanaSzerokosc];
+        if(zasieg <= 0){
+            zasieg = 1;
+        }
+            logika_planszy = new logika(zasieg, wysokosc, szerokosc);
+        komorki = new komorka*[zadana_wysokosc];
+        for(int i = 0; i < zadana_wysokosc;i++){
+            komorki[i] = new komorka[zadana_szerokosc];
         }
     }
     int GetWysokosc(){
@@ -57,10 +124,11 @@ public:
         komorki = logika_planszy->Zasady(komorki);
         generacja++;
     }
-    komorka** OdswierzPlansze(){
+    komorka** GetPlansza(){
         return komorki;
     }
 };
+
 
 int main(int argc, char *argv[])
 {
