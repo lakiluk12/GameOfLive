@@ -19,7 +19,7 @@ public:
 
     void set_qtablewiget();
     void set_plansza(plansza *nowa_plansza);
-    void kolejna_generacja();
+    void aktualizacja_planszy();
 private slots:
     void on_pushButton_clicked();
 

@@ -21,6 +21,9 @@ public:
     komorka** GetKomorki();
     void NewKomorki();
     void SetKomorki(komorka** nowa_plansza);
+    void ClearPlansza();
+    int GetGeneracja();
+    void LosujStan();
 };
 
 #endif // PLANSZA_H
