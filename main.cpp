@@ -29,13 +29,15 @@ int main(int argc, char *argv[])
             komorki[i][j].SetStatusKomorki(false);
         }
     }
-    komorki[2][2].SetStatusKomorki(true);
-    komorki[2][3].SetStatusKomorki(true);
-    komorki[2][4].SetStatusKomorki(true);
-    komorki[3][2].SetStatusKomorki(true);
-    komorki[4][3].SetStatusKomorki(true);
+    // komorki[2][2].SetStatusKomorki(true);
+    // komorki[2][3].SetStatusKomorki(true);
+    // komorki[2][4].SetStatusKomorki(true);
+    // komorki[3][2].SetStatusKomorki(true);
+    // komorki[4][3].SetStatusKomorki(true);
 
-
+    komorki[3][5].SetStatusKomorki(true);
+    komorki[4][5].SetStatusKomorki(true);
+    komorki[5][5].SetStatusKomorki(true);
 
 
     plansza nowa(8,8);
